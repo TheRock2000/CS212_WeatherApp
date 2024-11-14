@@ -10,6 +10,44 @@
     <body>
         <h1>Group Weather App</h1><br>
         <p>New project</p>
+        <!--Sidebar feed-->
+        <div class="app-container-sidebar">
+            <aside class="sidebar-feed">
+                <div class="sidebar-header">
+                    <img src="" alt="" class="sun-icon">
+                    <div class="app-name"></div>
+                    <div class="app-welcome"></div>
+                    <div class="app-time"></div>
+                </div>
+                <div class="loc-lookup">
+                    <input type="text" placeholder="Enter a city or zip-code">
+                </div>
+                <div class="city-menu">
+                    <!--Sidebar city/weather cards-->
+                    <div class="city-card">
+                        <p class="city-loc">generic city</p>
+                        <p class="weather">73° <span>High: 74° Low: 43°</span></p>
+                        <img src="" alt="">
+                    </div>
+                </div>
+            </aside>
+        </div>
+        
+        <!--Main body-->
+        <div class="app-container-main">
+            <div class="main-body">
+                <p class="app-time">Date (Fri, oct 5)</p>
+                <p class="city-loc">Really Generic city</p>
+                <p class="weather">50</p>
+                <img src="" alt="">
+            </div>
+            <div class="main-body-additional">
+                <div class="additional-humidity"></div>
+                <div class="additional-windSpeed"></div>
+                <div class="additional-percipitation"></div>
+                <div class="additional-atmosPressure"></div>
+            </div>
+        </div>
         <!--Add CSS script and JS-->
         <script src="app.js"></script>
     </body>
