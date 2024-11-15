@@ -1,1 +1,53 @@
+body {
+    background: rgb(80,167,208);
+    background: radial-gradient(circle, #4da2c9 3%, #6fadc7 50%, #77afd4 90%);
+}
 
+#app-container-sidebar {
+    width: 330px;
+    margin-top:20px; 
+    margin-left:20px; 
+    height:900px; 
+    border-radius: 15px;
+    box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.35);
+}
+
+#sun-icon {
+    margin-right:25px; 
+    margin-left:8px; 
+    margin-top:6px;
+}
+
+hr {
+    border: 1px solid black;
+}
+
+#search-box {
+    width: 227px;
+    border-radius: 7px;
+    border-style: solid;
+    border-color: black;
+    color: black;
+}
+
+#submit-placeholder {
+    border-radius: 7px;
+    border-style: solid;
+    border-color: black;
+}
+
+#nav-item1 {
+    margin-top: 20px;
+    border-radius: 7px;
+    border-color: rgb(0, 119, 255);
+    border-style: solid;
+    border-width: 2px;
+    background: rgb(80,167,208);
+    background: linear-gradient(165deg, rgb(64, 170, 241) 0%, rgb(95, 172, 206) 40%, rgb(197, 218, 228) 90%);
+    box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.35);
+}
+
+p {
+    margin: -3px;
+    font-weight:450;
+}
