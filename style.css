@@ -1,6 +1,7 @@
 body {
     background: rgb(80,167,208);
     background: radial-gradient(circle, #4da2c9 3%, #6fadc7 50%, #77afd4 90%);
+    display: flex;
 }
 
 #app-container-sidebar {
@@ -13,7 +14,7 @@ body {
 }
 
 #sun-icon {
-    margin-right:25px; 
+    margin-right:20px; 
     margin-left:8px; 
     margin-top:6px;
 }
@@ -23,7 +24,7 @@ hr {
 }
 
 #search-box {
-    width: 227px;
+    width: 222px;
     border-radius: 7px;
     border-style: solid;
     border-color: black;
@@ -49,5 +50,19 @@ hr {
 
 p {
     margin: -3px;
-    font-weight:450;
+    font-weight:375;
+}
+
+#app-container-main {
+    margin-left: auto;
+    margin-right: auto;
+    align-content: center;
+    color: white;
+    font-size: 100px;
+}
+
+#app-container-main {
+    margin-top: 60px;
+    text-align: center;
+    font-weight: 330;
 }
