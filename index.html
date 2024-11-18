@@ -12,10 +12,10 @@
 
     <body>
         <!--Sidebar feed-->
-        <div id="app-container-sidebar" class="d-flex flex-column p-3 bg-light">
+        <div id="app-container-sidebar" class="d-flex flex-column p-3">
             <aside class="sidebar-feed">
                 <div class="sidebar-header">
-                    <a href="/" class="d-inline-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                    <a class="d-inline-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                         <svg id="sun-icon" width="70" height="70" fill="black" class="bi bi-sun" viewBox="0 0 16 16">
                             <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 
                             .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 
@@ -32,7 +32,7 @@
                     </a>    
                 </div>
 
-                <hr>
+                <hr id="header-hr">
 
                 <div class="loc-lookup">
                     <form id="form1">
@@ -41,48 +41,28 @@
                     </form>
                 </div>
 
-                    <div class="city-menu">
-                        <div id="nav-item1">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                <h2 class="text-light" style="font-weight:450; letter-spacing:0.4px; margin:1px; font-size:25px; margin-left:20px; margin-top:20px; font-weight: 375;">Flagstaff, AZ</h2>
-                                <div style="display:inline-flex;">
-                                    <h2 class="text-light" style="font-weight:450; margin:5px; margin-left:20px; margin-bottom:20px; margin-top:4px; font-weight: 375;">73°</h2>
-                                    <div style="display:flex; flex-direction:column; margin-left:10px; margin-top: 5px;">
-                                        <p class="text-light">High: 74°</p>
-                                        <p class="text-light">Low: 43°</p> 
-                                    </div>
-                                    
-                                </div>
-                                </div>
-                                <svg id="sun-icon2" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#f7d12a" class="bi bi-sun-fill" viewBox="0 0 16 16">
-                                <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
+                <div class="city-menu"></div>
+
             </aside>
         </div>
         
         <!--Main body-->
         <div id="app-container-main">
             <div style="font-size: 40px;" id="current-date"></div>
-            <div style="margin-top: -10px; font-size: 70px;" id="current-city"></div>
+            <div style="margin-top: 0px; font-size: 70px;" id="current-city"></div>
             <div style="margin-top: -20px;" id="current-temp"></div>
-            <div style="margin-top: -10px; font-size: 35px;" id="current-condition">
-                <svg id="sun-icon2" style="margin-top: -7px;" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#f7d12a" class="bi bi-sun-fill" viewBox="0 0 16 16">
-                    <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
-                </svg> Clear
+            <div style="margin-top: -10px; font-size: 35px;" id="current-condition"></div>
+            <!-- Weather Grid -->
+            <div id="weather-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 25px; font-size: 16px;">
+                <div id="humidity">Humidity: --%</div>
+                <div id="wind-speed">Wind Speed: -- km/h</div>
+                <div id="feels-like">Feels Like: --°C</div>
             </div>
         </div>
 
         <!--Add JS-->
         <!--Added jquery just in case? might not be needed idk-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script src="app.js"></script>
+        <script src="app.js" ></script>
     </body>
 </html>
-
-
-
-
