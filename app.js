@@ -4,7 +4,7 @@ let apiKey = "eb5290ba6b4a4b7b93660906241711";
 let searchBox = document.getElementById("search-box");
 let form = document.getElementById("form1");
 let main_data;
-let defaultLoc = ["Flagstaff", "London", "Tokyo", "New York", "Seattle"];
+let defaultLoc = ["Flagstaff", "Tokyo", "Seattle", "Portland"];
 
 // Function to fetch weather data based on city or ZIP code
 const fetchWeatherData = async (query) => {
@@ -35,19 +35,23 @@ const updateWeatherUI = (main_data) => {
     const condition = main_data.current.condition.text;
     // Extract relevant data from API response
     const humidity = main_data.current.humidity; // Example: API returns humidity
-    const windSpeed = main_data.current.wind_kph; // Wind speed in kilometers per hour
-    const feelsLike = main_data.current.feelslike_c; // Feels like temperature in Celsius
+    const windSpeed = main_data.current.wind_mph; // Wind speed in miles per hour
+    const feelsLike = main_data.current.feelslike_f; // Feels like temperature in Fahrenheit
+
+    if (main_data.current.is_day === 0) {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    console.log(main_data.current.is_day);
 
     document.getElementById('current-city').innerHTML = city;
     document.getElementById('current-temp').innerHTML = temperature;
-    document.getElementById('current-condition').innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#f7d12a" class="bi bi-sun-fill" viewBox="0 0 16 16">
-            <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
-        </svg> ${condition}`;
+    document.getElementById('current-condition').innerHTML = `${condition}`;
+    
     // Update the grid elements dynamically
     document.getElementById('humidity').textContent = `Humidity: ${humidity}%`;
-    document.getElementById('wind-speed').textContent = `Wind Speed: ${windSpeed} km/h`;
-    document.getElementById('feels-like').textContent = `Feels Like: ${feelsLike}°C`;
+    document.getElementById('wind-speed').textContent = `Wind Speed: ${windSpeed} mph`;
+    document.getElementById('feels-like').textContent = `Feels Like: ${feelsLike}°F`;
 };
 
 // Handle search form submission
@@ -73,12 +77,6 @@ let month = date.toLocaleString([], {month: 'long'});
 let fullDate = `${dayOfWeek}, ${month} ${dayOfMonth}`;
 document.getElementById('current-date').innerHTML = fullDate;
 
-// placeholder data for tweaking the main content area (font size, thickness, etc)
-message1 = 'Flagstaff, AZ';
-message2 = '73°';
-document.getElementById('current-city').innerHTML = message1;
-document.getElementById('current-temp').innerHTML = message2;
-
 let darkModeToggle = document.createElement("button");
 darkModeToggle.innerHTML = "🌙";
 darkModeToggle.style.position = "absolute";
@@ -87,26 +85,40 @@ darkModeToggle.style.right = "20px";
 document.body.appendChild(darkModeToggle);
 
 darkModeToggle.addEventListener("click", function () {
-    document.body.classList.toggle("dark-mode");
     document.getElementById("app-container-sidebar").classList.toggle("dark-mode");
-    //selects all weather card elements then toggles dark mode
-    const cards = document.querySelectorAll("#nav-item1");
-    cards.forEach(card => {
-    card.classList.toggle("dark-mode");
-  });
+    if (main_data.current.is_day === 0)
+    {} else {
+      document.body.classList.toggle("dark-mode");  
+    }
+    document.getElementById("sun-icon").classList.toggle("dark-mode");
+    document.getElementById("header-hr").classList.toggle("dark-mode");
+    document.getElementById("submit-placeholder").classList.toggle("dark-mode");
+    document.getElementById("welcome-area").classList.toggle("dark-mode");
+    let sunIcon = document.getElementById("sun-icon");
+    if (sunIcon.style.fill === 'white'){
+      sunIcon.style.fill='black';
+    } else {
+      sunIcon.style.fill='white';
+    }
 });
 
 //Turned apiCall into a function
 async function apiCall(apiKey, query){
   const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${query}&aqi=no`;
+  const forecastUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${query}&aqi=no`;
 
    try {
       const response = await fetch(apiUrl);
+      const responseForecast = await fetch(forecastUrl);
       if (!response.ok) {
           throw new Error("Failed to fetch weather data");
       }
+      if (!responseForecast.ok) {
+        throw new Error("Failed to fetch weather data");
+      }
       const data = await response.json();
-      return data;
+      const forecastData = await responseForecast.json();
+      return data, forecastData;
   } catch (error) {
       console.error("Error fetching weather data:", error);
       alert("Unable to fetch weather data. Please check your input.");
@@ -124,12 +136,11 @@ async function renderDefaultLoc(defaultLoc, apiKey){
     try{
       let locData = await apiCall(apiKey, loc);
       if (!locData) continue;
-
       let card = document.createElement('div');
-      card.id = 'nav-item1';
+      card.id = 'nav-item';
       console.log(locData);
+      const forecastInfo = locData.forecast.forecastday[0];
       card.innerHTML = `
-      
         <div class="d-flex justify-content-between align-items-center">
           <div>
             <h2 class="text-light" style="font-weight:450; letter-spacing:0.4px; margin:1px; font-size:25px; margin-left:20px; margin-top:20px; font-weight: 375;">
@@ -137,21 +148,28 @@ async function renderDefaultLoc(defaultLoc, apiKey){
             </h2>
             <div style="display:inline-flex;">
               <h2 class="text-light" style="font-weight:450; margin:5px; margin-left:20px; margin-bottom:20px; margin-top:4px; font-weight: 375;">
-                ${locData.current.temp_f}°F
+                ${locData.current.temp_f}°
               </h2>
               <div style="display:flex; flex-direction:column; margin-left:10px; margin-top: 5px;">
-                <p class="text-light">Wind Speed: ${locData.current.wind_mph} </p>
-                <p class="text-light">wind Direction: ${locData.current.wind_dir}</p> 
+                <p class="text-light">High: ${forecastInfo.day.maxtemp_f}°</p>
+                <p class="text-light">Low: ${forecastInfo.day.mintemp_f}°</p> 
               </div>
             </div>
           </div>
           <img src="https:${locData.current.condition.icon}" alt="${locData.current.condition.text}" style="width: 50px; height: 50px; margin-right: 10px;">
         </div>
-    `;
+      `;
+      
       sidebarContainer.appendChild(card);
+      const cards = document.querySelectorAll("#nav-item");
+      cards.forEach(card => {
+        if (locData.current.is_day === 0) {
+          card.classList.toggle("dark-mode");
+        }
+      });
+      
     } catch (error) {
       console.error("Error rendering location:", error);
     }
   }
 }
-
