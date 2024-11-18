@@ -3,6 +3,8 @@
 let apiKey = "eb5290ba6b4a4b7b93660906241711";
 let searchBox = document.getElementById("search-box");
 let form = document.getElementById("form1");
+let main_data;
+let defaultLoc = ["Flagstaff", "London", "Tokyo", "New York", "Seattle"];
 
 // Function to fetch weather data based on city or ZIP code
 const fetchWeatherData = async (query) => {
@@ -20,15 +22,21 @@ const fetchWeatherData = async (query) => {
         alert("Unable to fetch weather data. Please check your input.");
     }
 };
+//update main body with initial location (flagstaff)
+(async () => {
+  main_data = await apiCall(apiKey, "Flagstaff");
+  fetchWeatherData(main_data.location.name); 
+})();
+
 // Update the main content area with the fetched weather data
-const updateWeatherUI = (data) => {
-    const city = `${data.location.name}, ${data.location.region}`;
-    const temperature = `${data.current.temp_f}°`;
-    const condition = data.current.condition.text;
+const updateWeatherUI = (main_data) => {
+    const city = `${main_data.location.name}, ${main_data.location.region}`;
+    const temperature = `${main_data.current.temp_f}°`;
+    const condition = main_data.current.condition.text;
     // Extract relevant data from API response
-    const humidity = data.current.humidity; // Example: API returns humidity
-    const windSpeed = data.current.wind_kph; // Wind speed in kilometers per hour
-    const feelsLike = data.current.feelslike_c; // Feels like temperature in Celsius
+    const humidity = main_data.current.humidity; // Example: API returns humidity
+    const windSpeed = main_data.current.wind_kph; // Wind speed in kilometers per hour
+    const feelsLike = main_data.current.feelslike_c; // Feels like temperature in Celsius
 
     document.getElementById('current-city').innerHTML = city;
     document.getElementById('current-temp').innerHTML = temperature;
@@ -81,5 +89,69 @@ document.body.appendChild(darkModeToggle);
 darkModeToggle.addEventListener("click", function () {
     document.body.classList.toggle("dark-mode");
     document.getElementById("app-container-sidebar").classList.toggle("dark-mode");
-    document.getElementById("nav-item1").classList.toggle("dark-mode");
+    //selects all weather card elements then toggles dark mode
+    const cards = document.querySelectorAll("#nav-item1");
+    cards.forEach(card => {
+    card.classList.toggle("dark-mode");
+  });
 });
+
+//Turned apiCall into a function
+async function apiCall(apiKey, query){
+  const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${query}&aqi=no`;
+
+   try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+          throw new Error("Failed to fetch weather data");
+      }
+      const data = await response.json();
+      return data;
+  } catch (error) {
+      console.error("Error fetching weather data:", error);
+      alert("Unable to fetch weather data. Please check your input.");
+      return null;
+  }
+}
+//Add weather cards for default location
+renderDefaultLoc(defaultLoc, apiKey);
+
+//function to create weather card elements for every city
+async function renderDefaultLoc(defaultLoc, apiKey){
+  let sidebarContainer = document.querySelector(".city-menu");
+  
+  for(loc of defaultLoc) {
+    try{
+      let locData = await apiCall(apiKey, loc);
+      if (!locData) continue;
+
+      let card = document.createElement('div');
+      card.id = 'nav-item1';
+      console.log(locData);
+      card.innerHTML = `
+      
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="text-light" style="font-weight:450; letter-spacing:0.4px; margin:1px; font-size:25px; margin-left:20px; margin-top:20px; font-weight: 375;">
+              ${locData.location.name}, ${locData.location.region}
+            </h2>
+            <div style="display:inline-flex;">
+              <h2 class="text-light" style="font-weight:450; margin:5px; margin-left:20px; margin-bottom:20px; margin-top:4px; font-weight: 375;">
+                ${locData.current.temp_f}°F
+              </h2>
+              <div style="display:flex; flex-direction:column; margin-left:10px; margin-top: 5px;">
+                <p class="text-light">Wind Speed: ${locData.current.wind_mph} </p>
+                <p class="text-light">wind Direction: ${locData.current.wind_dir}</p> 
+              </div>
+            </div>
+          </div>
+          <img src="https:${locData.current.condition.icon}" alt="${locData.current.condition.text}" style="width: 50px; height: 50px; margin-right: 10px;">
+        </div>
+    `;
+      sidebarContainer.appendChild(card);
+    } catch (error) {
+      console.error("Error rendering location:", error);
+    }
+  }
+}
+
