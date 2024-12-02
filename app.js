@@ -139,7 +139,7 @@ renderDefaultLoc(defaultLoc, apiKey);
 async function renderDefaultLoc(defaultLoc, apiKey){
   let sidebarContainer = document.querySelector(".city-menu");
   
-  for(loc of defaultLoc) {
+  for(loc of defaultLoc){
     try{
       let locData = await apiCall(apiKey, loc);
       if (!locData) continue;
@@ -171,14 +171,15 @@ async function renderDefaultLoc(defaultLoc, apiKey){
       const cards = document.querySelectorAll("#nav-item");
       //added conditions when updating CSS to only update when necessary
       //as in update when city is in nightime
-      if (locData.current.is_day === 0) {
+      if (locData.current.is_day === 0){
         card.classList.add("dark-mode");
       }
       else{
           card.classList.remove("dark-mode");
       }
       
-    } catch (error) {
+    } 
+    catch (error){
       console.error("Error rendering location:", error);
     }
   }
