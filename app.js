@@ -65,6 +65,8 @@ document.getElementById('form1').addEventListener('submit', (event) => {
     const query = document.getElementById('search-box').value.trim();
     if (query) {
         fetchWeatherData(query);
+        arrQuery = [query];
+        renderDefaultLoc(arrQuery, apiKey);
     } else {
         alert("Please enter a valid city or ZIP code.");
     }
