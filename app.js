@@ -4,7 +4,7 @@ let apiKey = "eb5290ba6b4a4b7b93660906241711";
 let searchBox = document.getElementById("search-box");
 let form = document.getElementById("form1");
 let main_data;
-let defaultLoc = ["Flagstaff", "Tokyo", "Seattle", "Portland"];
+let defaultLoc = ["Flagstaff", "Tokyo", "Seattle", "Portland", "Chicago", "London"];
 
 // Function to fetch weather data based on city or ZIP code
 const fetchWeatherData = async (query) => {
@@ -141,9 +141,9 @@ async function renderDefaultLoc(defaultLoc, apiKey){
       console.log(locData);
       const forecastInfo = locData.forecast.forecastday[0];
       card.innerHTML = `
-        <div class="d-flex justify-content-between align-items-center">
+        <div id="cards" class="d-flex justify-content-between align-items-center">
           <div>
-            <h2 class="text-light" style="font-weight:450; letter-spacing:0.4px; margin:1px; font-size:25px; margin-left:20px; margin-top:20px; font-weight: 375;">
+            <h2 id="card-titles" class="text-light" style="font-size: 25px; width: 225px; font-weight:450; letter-spacing:0.4px; margin:1px; margin-left:20px; margin-top:20px; font-weight: 375;">
               ${locData.location.name}, ${locData.location.region}
             </h2>
             <div style="display:inline-flex;">
@@ -156,7 +156,7 @@ async function renderDefaultLoc(defaultLoc, apiKey){
               </div>
             </div>
           </div>
-          <img src="https:${locData.current.condition.icon}" alt="${locData.current.condition.text}" style="width: 50px; height: 50px; margin-right: 10px;">
+          <img src="https:${locData.current.condition.icon}" alt="${locData.current.condition.text}" style="width: 50px; height: 50px; margin-right: 10px; margin-left: -10px; margin-top: 5px;">
         </div>
       `;
       
@@ -173,3 +173,4 @@ async function renderDefaultLoc(defaultLoc, apiKey){
     }
   }
 }
+
