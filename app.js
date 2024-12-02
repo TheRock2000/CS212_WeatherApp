@@ -38,8 +38,13 @@ const updateWeatherUI = (main_data) => {
     const windSpeed = main_data.current.wind_mph; // Wind speed in miles per hour
     const feelsLike = main_data.current.feelslike_f; // Feels like temperature in Fahrenheit
 
+    //added conditions when updating CSS to only update when necessary
+    //as in update when city is in nightime
     if (main_data.current.is_day === 0) {
-      document.body.classList.toggle("dark-mode");
+      document.body.classList.add("dark-mode");
+    }
+    else {
+        document.body.classList.remove("dark-mode");
     }
 
     console.log(main_data.current.is_day);
@@ -128,7 +133,7 @@ async function apiCall(apiKey, query){
 //Add weather cards for default location
 renderDefaultLoc(defaultLoc, apiKey);
 
-//function to create weather card elements for every city
+//function to create weather card elements for every default city and newly searched city
 async function renderDefaultLoc(defaultLoc, apiKey){
   let sidebarContainer = document.querySelector(".city-menu");
   
@@ -143,7 +148,7 @@ async function renderDefaultLoc(defaultLoc, apiKey){
       card.innerHTML = `
         <div id="cards" class="d-flex justify-content-between align-items-center">
           <div>
-            <h2 id="card-titles" class="text-light" style="font-size: 25px; width: 225px; font-weight:450; letter-spacing:0.4px; margin:1px; margin-left:20px; margin-top:20px; font-weight: 375;">
+            <h2 id="card-titles" class="text-light" data-location="LocationName" style="font-size: 25px; width: 225px; font-weight:450; letter-spacing:0.4px; margin:1px; margin-left:20px; margin-top:20px; font-weight: 375;">
               ${locData.location.name}, ${locData.location.region}
             </h2>
             <div style="display:inline-flex;">
@@ -162,11 +167,14 @@ async function renderDefaultLoc(defaultLoc, apiKey){
       
       sidebarContainer.appendChild(card);
       const cards = document.querySelectorAll("#nav-item");
-      cards.forEach(card => {
-        if (locData.current.is_day === 0) {
-          card.classList.toggle("dark-mode");
-        }
-      });
+      //added conditions when updating CSS to only update when necessary
+      //as in update when city is in nightime
+      if (locData.current.is_day === 0) {
+        card.classList.add("dark-mode");
+      }
+      else{
+          card.classList.remove("dark-mode");
+      }
       
     } catch (error) {
       console.error("Error rendering location:", error);
@@ -174,3 +182,28 @@ async function renderDefaultLoc(defaultLoc, apiKey){
   }
 }
 
+//Listener for clicks on weather cards to populate the main body
+document.querySelector('.city-menu').addEventListener('click', (event)=>{
+  //get the closest card to click on the sidebar menu
+  let card = event.target.closest('#cards');
+  //card was retrieved successfully
+  if(card){
+    //grab card city
+    let cardTitle = card.querySelector('#card-titles');
+    //city was successfully grabbed
+    if(cardTitle){
+      //save city
+      let location =cardTitle.textContent;
+      //send city to update body
+      fetchWeatherData(location);
+    }
+    else{
+      //failed to get city name
+      console.log("Unable to retrieve card title");
+    }
+  }
+  else{
+    //failed to get clicked card
+    console.log("Unable to retrieve card");
+  }
+});
