@@ -152,23 +152,33 @@ body.dark-mode {
     background: linear-gradient(165deg, rgb(45, 45, 45) 0%, rgb(49, 49, 49) 40%, rgb(53, 53, 53) 90%);
 }
 
-#savedCitiesList {
-    list-style: none;
-    padding: 0;
+#dropdown {
+    position: relative;
+    display: inline-block;
+    top: 20px;
+    right: 20px;
 }
 
-#savedCitiesList li {
-    margin: 5px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#savedCitiesList button {
-    margin-left: 10px;
-    padding: 5px 10px;
-    background-color: rgb(107, 220, 76);
-    color: white;
+#dropbtn {
     border: none;
-    cursor: pointer;
+    background: transparent;
+    padding: 0px;
+}
+
+#dropdown-content {
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 53px;
+    min-width: 145px;
+    min-height: 100px;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px 5px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+#dropdown:hover #dropdown-content {
+    display: block;
 }

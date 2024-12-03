@@ -28,6 +28,27 @@ const fetchWeatherData = async (query) => {
   fetchWeatherData(main_data.location.name); 
 })();
 
+let darkModeToggle = document.getElementById("dark-mode");
+
+// dark mode toggle function
+darkModeToggle.addEventListener("click", function () {
+    document.getElementById("app-container-sidebar").classList.toggle("dark-mode");
+    if (main_data.current.is_day === 0)
+    {} else {
+      document.body.classList.toggle("dark-mode");  
+    }
+    document.getElementById("sun-icon").classList.toggle("dark-mode");
+    document.getElementById("header-hr").classList.toggle("dark-mode");
+    document.getElementById("submit-placeholder").classList.toggle("dark-mode");
+    document.getElementById("welcome-area").classList.toggle("dark-mode");
+    let sunIcon = document.getElementById("sun-icon");
+    if (sunIcon.style.fill === 'white'){
+      sunIcon.style.fill='black';
+    } else {
+      sunIcon.style.fill='white';
+    }
+});
+
 // Update the main content area with the fetched weather data
 const updateWeatherUI = (main_data) => {
     const city = `${main_data.location.name}, ${main_data.location.region}`;
@@ -117,49 +138,6 @@ renderDefaultLoc(defaultLoc, apiKey);
 async function renderDefaultLoc(defaultLoc, apiKey){
   let sidebarContainer = document.querySelector(".city-menu");
 
-  let darkModeToggle = document.createElement("button");
-  darkModeToggle.innerHTML = "☀";
-  darkModeToggle.style.position = "absolute";
-  darkModeToggle.style.top = "20px";
-  darkModeToggle.style.right = "20px";
-  document.body.appendChild(darkModeToggle);
-
-  // dark mode toggle function
-  darkModeToggle.addEventListener("click", function () {
-      document.getElementById("app-container-sidebar").classList.toggle("dark-mode");
-      if (main_data.current.is_day === 0)
-      {} else {
-        document.body.classList.toggle("dark-mode");  
-      }
-      document.getElementById("sun-icon").classList.toggle("dark-mode");
-      document.getElementById("header-hr").classList.toggle("dark-mode");
-      document.getElementById("submit-placeholder").classList.toggle("dark-mode");
-      document.getElementById("welcome-area").classList.toggle("dark-mode");
-      let sunIcon = document.getElementById("sun-icon");
-      if (sunIcon.style.fill === 'white'){
-        sunIcon.style.fill='black';
-        darkModeToggle.style.background = 'white';
-        darkModeToggle.innerHTML = '☀';
-        clearButton.style.background = 'white';
-        clearButton.style.color = 'black';
-      } else {
-        sunIcon.style.fill='white';
-        darkModeToggle.style.background = '#383838';
-        darkModeToggle.innerHTML = '🌙';
-        clearButton.style.background = '#383838';
-        clearButton.style.color = 'white';
-      }
-  });
-
-  // create clear city button
-  let clearButton = document.createElement("button");
-  clearButton.style.position = "absolute";
-  clearButton.style.top = "20px";
-  clearButton.style.right = "65px";
-  clearButton.style.height = "30px";
-  clearButton.innerHTML = "Clear All Cities";
-  document.body.appendChild(clearButton);
-
   // function to remove all cards if desired
   function removeCards() {
     const allCards = document.querySelectorAll('#nav-item');
@@ -167,6 +145,7 @@ async function renderDefaultLoc(defaultLoc, apiKey){
   }
 
   // adding event listener for card removal
+  let clearButton = document.getElementById("clear-city");
   clearButton.addEventListener('click', removeCards);
 
   for(loc of defaultLoc){
@@ -238,43 +217,3 @@ document.querySelector('.city-menu').addEventListener('click', (event)=>{
     console.log("Unable to retrieve card");
   }
 });
-
-function saveCity() {
-  const city = cityInput.value.trim();
-  if (!city) return alert("Please enter a city name.");
-  let cities = JSON.parse(localStorage.getItem("savedCities")) || [];
-  if (!cities.includes(city)) {
-      cities.push(city);
-      localStorage.setItem("savedCities", JSON.stringify(cities));
-      updateSavedCitiesUI();
-      alert(`${city} saved!`);
-  } else {
-      alert(`${city} is already saved.`);
-  }
-}
-
-function deleteCity(city) {
-  let cities = JSON.parse(localStorage.getItem("savedCities")) || [];
-  cities = cities.filter(savedCity => savedCity !== city);
-  localStorage.setItem("savedCities", JSON.stringify(cities));
-  updateSavedCitiesUI();
-}
-function loadSavedCities() {
-  updateSavedCitiesUI();
-}
-
-function updateSavedCitiesUI() {
-  const cities = JSON.parse(localStorage.getItem("savedCities")) || [];
-  savedCitiesList.innerHTML = "";
-  cities.forEach(city => {
-      const li = document.createElement("li");
-      li.textContent = city;
-      const deleteButton = document.createElement("button");
-      deleteButton.textContent = "Delete";
-      deleteButton.addEventListener("click", () => deleteCity(city));
-      li.appendChild(deleteButton);
-      savedCitiesList.appendChild(li);
-  });
-}
-saveCityButton.addEventListener("click", saveCity);
-window.addEventListener("load", loadSavedCities);
