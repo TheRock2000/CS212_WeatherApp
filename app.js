@@ -238,3 +238,43 @@ document.querySelector('.city-menu').addEventListener('click', (event)=>{
     console.log("Unable to retrieve card");
   }
 });
+
+function saveCity() {
+  const city = cityInput.value.trim();
+  if (!city) return alert("Please enter a city name.");
+  let cities = JSON.parse(localStorage.getItem("savedCities")) || [];
+  if (!cities.includes(city)) {
+      cities.push(city);
+      localStorage.setItem("savedCities", JSON.stringify(cities));
+      updateSavedCitiesUI();
+      alert(`${city} saved!`);
+  } else {
+      alert(`${city} is already saved.`);
+  }
+}
+
+function deleteCity(city) {
+  let cities = JSON.parse(localStorage.getItem("savedCities")) || [];
+  cities = cities.filter(savedCity => savedCity !== city);
+  localStorage.setItem("savedCities", JSON.stringify(cities));
+  updateSavedCitiesUI();
+}
+function loadSavedCities() {
+  updateSavedCitiesUI();
+}
+
+function updateSavedCitiesUI() {
+  const cities = JSON.parse(localStorage.getItem("savedCities")) || [];
+  savedCitiesList.innerHTML = "";
+  cities.forEach(city => {
+      const li = document.createElement("li");
+      li.textContent = city;
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.addEventListener("click", () => deleteCity(city));
+      li.appendChild(deleteButton);
+      savedCitiesList.appendChild(li);
+  });
+}
+saveCityButton.addEventListener("click", saveCity);
+window.addEventListener("load", loadSavedCities);
