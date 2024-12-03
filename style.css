@@ -151,3 +151,24 @@ body.dark-mode {
 #weather-grid.dark-mode {
     background: linear-gradient(165deg, rgb(45, 45, 45) 0%, rgb(49, 49, 49) 40%, rgb(53, 53, 53) 90%);
 }
+
+#savedCitiesList {
+    list-style: none;
+    padding: 0;
+}
+
+#savedCitiesList li {
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#savedCitiesList button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: rgb(107, 220, 76);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
