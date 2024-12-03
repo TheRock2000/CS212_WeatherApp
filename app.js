@@ -4,7 +4,7 @@ let apiKey = "eb5290ba6b4a4b7b93660906241711";
 let searchBox = document.getElementById("search-box");
 let form = document.getElementById("form1");
 let main_data;
-let defaultLoc = ["Flagstaff", "Tokyo", "Seattle", "Portland", "Chicago", "London"];
+let defaultLoc = ["Flagstaff", "Seattle", "Tokyo", "Melbourne"];
 
 // Function to fetch weather data based on city or ZIP code
 const fetchWeatherData = async (query) => {
@@ -42,15 +42,18 @@ const updateWeatherUI = (main_data) => {
     //as in update when city is in nightime
     if (main_data.current.is_day === 0) {
       document.body.classList.add("dark-mode");
+      document.getElementById("weather-grid").classList.add("dark-mode");
     }
     else {
         document.body.classList.remove("dark-mode");
+        document.getElementById("weather-grid").classList.remove("dark-mode");
     }
 
     console.log(main_data.current.is_day);
 
     document.getElementById('current-city').innerHTML = city;
     document.getElementById('current-temp').innerHTML = temperature;
+    document.getElementById('condition-icon').innerHTML = `<img src="https:${main_data.current.condition.icon}" alt="${main_data.current.condition.text}" style="width: 50px; height: 50px; margin-right: 10px; margin-left: -10px; margin-top: 5px;">`;
     document.getElementById('current-condition').innerHTML = `${condition}`;
     
     // Update the grid elements dynamically
@@ -84,31 +87,6 @@ let month = date.toLocaleString([], {month: 'long'});
 let fullDate = `${dayOfWeek}, ${month} ${dayOfMonth}`;
 document.getElementById('current-date').innerHTML = fullDate;
 
-let darkModeToggle = document.createElement("button");
-darkModeToggle.innerHTML = "🌙";
-darkModeToggle.style.position = "absolute";
-darkModeToggle.style.top = "20px";
-darkModeToggle.style.right = "20px";
-document.body.appendChild(darkModeToggle);
-
-darkModeToggle.addEventListener("click", function () {
-    document.getElementById("app-container-sidebar").classList.toggle("dark-mode");
-    if (main_data.current.is_day === 0)
-    {} else {
-      document.body.classList.toggle("dark-mode");  
-    }
-    document.getElementById("sun-icon").classList.toggle("dark-mode");
-    document.getElementById("header-hr").classList.toggle("dark-mode");
-    document.getElementById("submit-placeholder").classList.toggle("dark-mode");
-    document.getElementById("welcome-area").classList.toggle("dark-mode");
-    let sunIcon = document.getElementById("sun-icon");
-    if (sunIcon.style.fill === 'white'){
-      sunIcon.style.fill='black';
-    } else {
-      sunIcon.style.fill='white';
-    }
-});
-
 //Turned apiCall into a function
 async function apiCall(apiKey, query){
   const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${query}&aqi=no`;
@@ -138,7 +116,59 @@ renderDefaultLoc(defaultLoc, apiKey);
 //function to create weather card elements for every default city and newly searched city
 async function renderDefaultLoc(defaultLoc, apiKey){
   let sidebarContainer = document.querySelector(".city-menu");
-  
+
+  let darkModeToggle = document.createElement("button");
+  darkModeToggle.innerHTML = "☀";
+  darkModeToggle.style.position = "absolute";
+  darkModeToggle.style.top = "20px";
+  darkModeToggle.style.right = "20px";
+  document.body.appendChild(darkModeToggle);
+
+  // dark mode toggle function
+  darkModeToggle.addEventListener("click", function () {
+      document.getElementById("app-container-sidebar").classList.toggle("dark-mode");
+      if (main_data.current.is_day === 0)
+      {} else {
+        document.body.classList.toggle("dark-mode");  
+      }
+      document.getElementById("sun-icon").classList.toggle("dark-mode");
+      document.getElementById("header-hr").classList.toggle("dark-mode");
+      document.getElementById("submit-placeholder").classList.toggle("dark-mode");
+      document.getElementById("welcome-area").classList.toggle("dark-mode");
+      let sunIcon = document.getElementById("sun-icon");
+      if (sunIcon.style.fill === 'white'){
+        sunIcon.style.fill='black';
+        darkModeToggle.style.background = 'white';
+        darkModeToggle.innerHTML = '☀';
+        clearButton.style.background = 'white';
+        clearButton.style.color = 'black';
+      } else {
+        sunIcon.style.fill='white';
+        darkModeToggle.style.background = '#383838';
+        darkModeToggle.innerHTML = '🌙';
+        clearButton.style.background = '#383838';
+        clearButton.style.color = 'white';
+      }
+  });
+
+  // create clear city button
+  let clearButton = document.createElement("button");
+  clearButton.style.position = "absolute";
+  clearButton.style.top = "20px";
+  clearButton.style.right = "65px";
+  clearButton.style.height = "30px";
+  clearButton.innerHTML = "Clear All Cities";
+  document.body.appendChild(clearButton);
+
+  // function to remove all cards if desired
+  function removeCards() {
+    const allCards = document.querySelectorAll('#nav-item');
+    allCards.forEach(card => card.remove());
+  }
+
+  // adding event listener for card removal
+  clearButton.addEventListener('click', removeCards);
+
   for(loc of defaultLoc){
     try{
       let locData = await apiCall(apiKey, loc);
@@ -150,11 +180,11 @@ async function renderDefaultLoc(defaultLoc, apiKey){
       card.innerHTML = `
         <div id="cards" class="d-flex justify-content-between align-items-center">
           <div>
-            <h2 id="card-titles" class="text-light" data-location="LocationName" style="font-size: 25px; width: 225px; font-weight:450; letter-spacing:0.4px; margin:1px; margin-left:20px; margin-top:20px; font-weight: 375;">
+            <h2 id="card-titles" class="text-light" data-location="LocationName" style="font-size: 25px; width: 225px; font-weight:300; letter-spacing:0.4px; margin:1px; margin-left:20px; margin-top:20px; font-weight: 375;">
               ${locData.location.name}, ${locData.location.region}
             </h2>
             <div style="display:inline-flex;">
-              <h2 class="text-light" style="font-weight:450; margin:5px; margin-left:20px; margin-bottom:20px; margin-top:4px; font-weight: 375;">
+              <h2 class="text-light" style="font-weight:300; margin:5px; margin-left:20px; margin-bottom:20px; margin-top:4px; font-weight: 300;">
                 ${locData.current.temp_f}°
               </h2>
               <div style="display:flex; flex-direction:column; margin-left:10px; margin-top: 5px;">
@@ -163,12 +193,11 @@ async function renderDefaultLoc(defaultLoc, apiKey){
               </div>
             </div>
           </div>
-          <img src="https:${locData.current.condition.icon}" alt="${locData.current.condition.text}" style="width: 50px; height: 50px; margin-right: 10px; margin-left: -10px; margin-top: 5px;">
+          <img src="https:${locData.current.condition.icon}" alt="${locData.current.condition.text}" style="width: 50px; height: 50px; margin-right: 45px; margin-left: -10px; margin-top: 5px;">
         </div>
       `;
       
       sidebarContainer.appendChild(card);
-      const cards = document.querySelectorAll("#nav-item");
       //added conditions when updating CSS to only update when necessary
       //as in update when city is in nightime
       if (locData.current.is_day === 0){
@@ -177,7 +206,6 @@ async function renderDefaultLoc(defaultLoc, apiKey){
       else{
           card.classList.remove("dark-mode");
       }
-      
     } 
     catch (error){
       console.error("Error rendering location:", error);

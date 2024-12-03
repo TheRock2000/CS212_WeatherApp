@@ -28,7 +28,6 @@
                             <h2 id="app-welcome" style="margin:1px; font-weight:350;" class="fs-5">Welcome, User</h2>
                             <h2 id="app-time" style="margin:1px; font-weight:350;" class="fs-5"></h2>
                         </div>
-
                     </a>    
                 </div>
 
@@ -48,15 +47,19 @@
         
         <!--Main body-->
         <div id="app-container-main">
-            <div style="font-size: 40px;" id="current-date"></div>
+            <div style="font-size: 40px; margin-top: 20px;" id="current-date"></div>
             <div style="margin-top: 0px; font-size: 70px;" id="current-city"></div>
-            <div style="margin-top: -20px;" id="current-temp"></div>
-            <div style="margin-top: -10px; font-size: 35px;" id="current-condition"></div>
+            <div style="margin-top: -20px; margin-bottom: -70px;" id="current-temp"></div>
+            <div style="display: inline-flex;">
+                <div style="margin-top: -65px;" id="condition-icon"></div>
+                <div style="font-size: 35px; margin-left: -5px;" id="current-condition"></div>
+            </div>
             <!-- Weather Grid -->
-            <div id="weather-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 25px; font-size: 16px;">
-                <div id="humidity">Humidity: --%</div>
-                <div id="wind-speed">Wind Speed: -- km/h</div>
-                <div id="feels-like">Feels Like: --°C</div>
+            <div id="weather-grid">
+                <div id="addl-info">Additional Information</div>
+                <div style="font-size: 20px;" id="humidity">Humidity: --%</div>
+                <div style="font-size: 20px;" id="wind-speed">Wind Speed: -- km/h</div>
+                <div style="font-size: 20px;" id="feels-like">Feels Like: --°C</div>
             </div>
         </div>
 
