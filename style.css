@@ -4,11 +4,15 @@ body {
     display: flex;
 }
 
+/*-------------------------------------- Sidebar Properties --------------------------------------*/
+
 #app-container-sidebar {
+    min-width: 260px;
     width: 330px;
     margin-top:20px; 
     margin-left:20px; 
-    height:95vh; 
+    height: 95.8vh;
+    max-height: 1100px; 
     border-radius: 15px;
     box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.35);
     display: flex;
@@ -17,14 +21,22 @@ body {
     overflow: auto;
 }
 
-::-webkit-scrollbar {
-    width: 0px;
-}
-
 #sun-icon {
     margin-right:20px; 
     margin-left:8px; 
     margin-top:6px;
+}
+
+#app-name {
+    font-size: 32px;
+}
+
+#app-welcome {
+    font-size: 20px;
+}
+
+#app-time {
+    font-size: 20px;
 }
 
 hr {
@@ -32,28 +44,42 @@ hr {
 }
 
 #search-box {
-    width: 227px;
+    width: 298px;
+    box-shadow: 0.5px 1px 7px rgba(88, 88, 88, 0.7);
     border-radius: 7px;
     border-style: solid;
     border-color: black;
     color: black;
+    margin: 0px;
+    border: 0px;
 }
 
 #search-box:focus {
-    border-color: rgb(81, 143, 214); 
+    transition-duration: 0.2s;
+    box-shadow: 0.5px 1px 8px rgba(81, 143, 214, 0.8);
     outline: none;
 }
 
-#submit-placeholder {
-    background-color: rgb(255, 255, 255);
-    border-radius: 7px;
-    color: rgb(9, 0, 0);
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+#search-icon {
+    border: none;
+    background: transparent;
+    position: relative;
+    left: 267px;
+    top: -28px;
+    margin: 0px;
 }
 
-#submit-placeholder:hover {
-    background-color: rgb(95, 172, 206);
+#search-icon:hover {
+    transition-duration: 0.2s;
+    color: rgb(31, 121, 196);
+}
+
+.city-menu {
+    margin-top: -26px;
+}
+
+#card-titles {
+    font-size: 25px;
 }
 
 #nav-item {
@@ -64,9 +90,11 @@ hr {
     border-width: 0px;
     background: rgb(80,167,208);
     background: linear-gradient(165deg, rgb(64, 170, 241) 0%, rgb(95, 172, 206) 40%, rgb(197, 218, 228) 90%);
-    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.55);
+    box-shadow: 0px 2px 12px rgba(61, 61, 61, 0.55);
     transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
 }
+
 #nav-item:hover {
     background: linear-gradient(165deg, rgb(64, 170, 241) 0%, rgb(95, 172, 206) 40%, rgb(130, 170, 200) 90%);
     transform: scale(1.05);
@@ -80,10 +108,24 @@ hr {
     box-shadow: 0 0 5px 2px rgba(0, 119, 255, 0.6);
 }
 
-p {
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+#card-icon {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    left: -10px;
+    margin-top: 1px;
+}
+
+p { /* Adjusts margins between the High and Low elements on each weather card */
     margin: -3px;
     font-weight:325;
 }
+
+/*-------------------------------------- Main Weather Grid Properties --------------------------------------*/
 
 #app-container-main {
     margin-left: auto;
@@ -96,9 +138,18 @@ p {
     font-weight: 325;
 }
 
-#weather-grid {
+#condition-icon {
+    margin-top: -65px;
+}
+
+#current-condition {
+    font-size: 35px; margin-left: -5px;
+}
+
+#info-grid {
     display: grid; 
     height: 150px;
+    width: 650px;
     margin-top: -7px;
     align-content: center;
     grid-template-rows: repeat(2, 1fr);
@@ -119,38 +170,7 @@ p {
     font-size: 28px;
 }
 
-body.dark-mode {
-    background: radial-gradient(circle, rgb(15, 15, 15) 3%, #292929 50%, #424242 90%);
-    color: white;
-}
-#app-container-sidebar.dark-mode {
-    background: #464646;
-    color: white;
-}
-
-#nav-item.dark-mode {
-    background: linear-gradient(165deg, rgb(45, 45, 45) 0%, rgb(60, 60, 60) 40%, rgb(100, 100, 100) 90%);
-}
-
-#header-hr.dark-mode {
-    border: 1px solid white;
-}
-
-#submit-placeholder.dark-mode {
-    border: 2px solid black;
-}
-
-#welcome-area.dark-mode {
-    color: white;
-}
-
-#nav-item {
-    cursor: pointer;
-}
-
-#weather-grid.dark-mode {
-    background: linear-gradient(165deg, rgb(45, 45, 45) 0%, rgb(49, 49, 49) 40%, rgb(53, 53, 53) 90%);
-}
+/*-------------------------------------- Dropdown Menu Properties --------------------------------------*/
 
 #dropdown {
     position: relative;
@@ -183,6 +203,39 @@ body.dark-mode {
     display: block;
 }
 
+/*-------------------------------------- Dark Mode Properties --------------------------------------*/
+
+body.dark-mode {
+    background: radial-gradient(circle, rgb(15, 15, 15) 3%, #292929 50%, #424242 90%);
+    color: white;
+}
+#app-container-sidebar.dark-mode {
+    background: #4e4e4e;
+    color: white;
+}
+
+#search-box.dark-mode {
+    box-shadow: 0.5px 1px 7px rgba(0, 0, 0, 0.8);
+}
+
+#nav-item.dark-mode {
+    background: linear-gradient(165deg, rgb(45, 45, 45) 0%, rgb(60, 60, 60) 40%, rgb(100, 100, 100) 90%);
+}
+
+#header-hr.dark-mode {
+    border: 1px solid white;
+}
+
+#welcome-area.dark-mode {
+    color: white;
+}
+
+#info-grid.dark-mode {
+    background: linear-gradient(165deg, rgb(45, 45, 45) 0%, rgb(49, 49, 49) 40%, rgb(53, 53, 53) 90%);
+}
+
+/*-------------------------------------- savedCities Properties --------------------------------------*/
+
 #savedCitiesList {
     list-style: none;
     padding: 0;
@@ -206,4 +259,86 @@ body.dark-mode {
 
 #savedCitiesList button:hover {
     background-color: darkred;
+}
+
+/*-------------------------------------- Different Media Format Properties --------------------------------------*/
+@media (max-width: 1100px) {
+    #search-box {
+        width: 227px;
+    }
+
+    #app-container-sidebar {
+        width: 260px;
+    }
+
+    #search-icon {
+        left: 200px;
+    }
+
+    #app-name {
+        font-size: 20px;
+    }
+
+    #app-welcome {
+        font-size: 15px;
+    }
+
+    #app-time {
+        font-size: 15px;
+    }
+
+    #header-hr {
+        margin-top: 7px;
+    }
+
+    #card-titles {
+        font-size: 19px;
+    }
+
+    #card-temp {
+        font-size: 25px;
+    }
+
+    #high-low {
+        font-size: 12px;
+    }
+
+    p {
+        margin: -2px;
+        margin-top: -1.5px;
+        margin-left: -5px;
+    }
+
+    #card-icon {
+        width: 40px;
+        height: 40px;
+        position: relative;
+        left: -66px;
+        margin-top: 1px;
+    }
+
+    #app-container-main {
+        font-size: 75px;
+    }
+
+    #current-date {
+        margin-bottom: -10px;
+    }
+
+    #condition-icon {
+        margin-top: 20px;
+    }
+
+    #current-condition {
+        margin-top: 60px;
+    }
+
+    #info-grid {
+        width: 575px;
+    }
+}
+
+@media (min-width: 600px) {
+
+    
 }
