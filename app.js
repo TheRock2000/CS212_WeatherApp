@@ -237,6 +237,18 @@ const saveCityButton = document.getElementById("saveCity");
 function saveCity() {
   const cityInput = document.getElementById("search-box");
   const city = cityInput.value.trim();
+  let username = localStorage.getItem("username");
+
+  if(!username){
+    username = prompt("Welcome! Please enter your name:");
+    if(username){
+      localStorage.setItem("username",username);
+    }
+    else{
+      return alert("Name is required");
+    }
+  }
+
   if (!city) return alert("Please enter a city name.");
   let cities = JSON.parse(localStorage.getItem("savedCities")) || [];
   if (!cities.includes(city)) {
@@ -255,6 +267,14 @@ function deleteCity(city) {
   updateSavedCitiesUI();
 }
 function loadSavedCities() {
+  let username  = localStorage.getItem("username");
+  if(username){
+    document.getElementById("app-welcome").textContent = `Welcome, ${username}`;
+  }
+  else{
+    document.getElementById("app-welcome").textContent = 'Welcome, Guest';
+  }
+  const cities = JSON.parse(localStorage.getItem("savedCities")) || [];
   updateSavedCitiesUI();
 }
 
