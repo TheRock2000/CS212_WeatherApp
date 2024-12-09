@@ -19,10 +19,10 @@ let fullDate = `${dayOfWeek}, ${month} ${dayOfMonth}`;
 document.getElementById('current-date').innerHTML = fullDate;
 
 // Ask user for name
-let username = prompt("Welcome! Please enter your name:")
-if (username != null && username != '') {
-  document.getElementById("app-welcome").innerHTML = "Welcome, " + username;
-}
+//let username = prompt("Welcome! Please enter your name:")
+//if (username != null && username != '') {
+//  document.getElementById("app-welcome").innerHTML = "Welcome, " + username;
+//}
 
 // Creating dark mode variable
 let darkModeToggle = document.getElementById("dark-mode");
