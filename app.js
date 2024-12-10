@@ -260,10 +260,10 @@ function saveCity() {
       alert(`${city} is already saved.`);
   }
 }
-function deleteCity(city) {
-  let cities = JSON.parse(localStorage.getItem("savedCities")) || [];
-  cities = cities.filter(savedCity => savedCity !== city);
-  localStorage.setItem("savedCities", JSON.stringify(cities));
+function deleteCity(cityName) {
+  let savedCities = JSON.parse(localStorage.getItem("savedCities")) || [];
+  savedCities = savedCities.filter(city => city.name !== cityName);
+  localStorage.setItem("savedCities", JSON.stringify(savedCities));
   updateSavedCitiesUI();
 }
 function loadSavedCities() {
@@ -280,21 +280,117 @@ function loadSavedCities() {
 
 function updateSavedCitiesUI() {
   const cities = JSON.parse(localStorage.getItem("savedCities")) || [];
-  savedCitiesList.innerHTML = "";
+  savedCitiesList.innerHTML = ""; 
+
   cities.forEach(city => {
-      const li = document.createElement("li");
-      li.textContent = city;
-      const deleteButton = document.createElement("button");
-      deleteButton.textContent = "Delete";
-      deleteButton.style.marginLeft = "10px";
-      deleteButton.addEventListener("click", () => deleteCity(city));
-      li.appendChild(deleteButton);
-      savedCitiesList.appendChild(li);
+    const cityCard = document.createElement("div");
+    cityCard.classList.add("saved-city-card", city.backgroundClass); // 动态应用背景样式
+
+    cityCard.innerHTML = `
+      <div class="saved-city-info">
+        <h3>${city.name}, ${city.region}</h3>
+        <p>Temperature: ${city.temp}°F</p>
+        <img src="${city.icon}" alt="${city.condition}" style="width: 40px; height: 40px;">
+        <p>Condition: ${city.condition}</p>
+      </div>
+      <button class="delete-button">Delete</button>
+    `;
+
+    const deleteButton = cityCard.querySelector(".delete-button");
+    deleteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      deleteCity(city.name); 
+    });
+
+    cityCard.addEventListener("click", () => fetchWeatherData(city.name));
+
+    savedCitiesList.appendChild(cityCard);
   });
 }
 
+
 saveCityButton.addEventListener("click", saveCity);
 window.addEventListener("load", loadSavedCities);
+
+function saveCity() {
+  const cityInput = document.getElementById("search-box");
+  const cityName = cityInput.value.trim();
+  if (!cityName) return alert("Please enter a city name.");
+
+  apiCall(apiKey, cityName).then(cityData => {
+    if (!cityData) return alert("Failed to fetch weather data.");
+
+    const weatherCondition = cityData.current.condition.text.toLowerCase();
+    const isDay = cityData.current.is_day; 
+
+    const backgroundClass = getWeatherBackgroundClass(weatherCondition, isDay);
+
+    const cityInfo = {
+      name: cityData.location.name,
+      region: cityData.location.region,
+      temp: Math.round(cityData.current.temp_f),
+      icon: `https:${cityData.current.condition.icon}`,
+      condition: cityData.current.condition.text,
+      backgroundClass: backgroundClass
+    };
+
+    let savedCities = JSON.parse(localStorage.getItem("savedCities")) || [];
+    const cityExists = savedCities.some(city => city.name === cityInfo.name);
+
+    if (!cityExists) {
+      savedCities.push(cityInfo);
+      localStorage.setItem("savedCities", JSON.stringify(savedCities));
+      updateSavedCitiesUI();
+      alert(`${cityInfo.name} saved!`);
+    } else {
+      alert(`${cityInfo.name} is already saved.`);
+    }
+  }).catch(error => {
+    console.error("Error saving city data:", error);
+  });
+}
+
+function getWeatherBackgroundClass(condition, isDay) {
+  if (condition.includes("sunny") || condition.includes("clear")) {
+    return isDay ? 'card-sunny' : 'card-clear-night';
+  } else if (condition.includes("cloudy")) {
+    return isDay ? 'card-cloudy' : 'card-cloudy-night';
+  } else if (condition.includes("rain") || condition.includes("shower")) {
+    return isDay ? 'card-rainy' : 'card-rainy-night';
+  } else if (condition.includes("snow")) {
+    return isDay ? 'card-snowy' : 'card-snowy-night';
+  } else {
+    return isDay ? 'card-default' : 'card-default-night';
+  }
+}
+
+function updateSavedCitiesUI() {
+  const cities = JSON.parse(localStorage.getItem("savedCities")) || [];
+  savedCitiesList.innerHTML = ""; 
+
+  cities.forEach(city => {
+    const cityCard = document.createElement("div");
+    cityCard.classList.add("saved-city-card", city.backgroundClass); 
+
+    cityCard.innerHTML = `
+      <div class="saved-city-info">
+        <h3>${city.name}, ${city.region}</h3>
+        <p>Temperature: ${city.temp}°F</p>
+        <img src="${city.icon}" alt="${city.condition}" style="width: 40px; height: 40px;">
+        <p>Condition: ${city.condition}</p>
+      </div>
+      <button class="delete-button">Delete</button>
+    `;
+
+    cityCard.querySelector(".delete-button").addEventListener("click", () => deleteCity(city.name));
+    cityCard.addEventListener("click", () => fetchWeatherData(city.name));
+
+    savedCitiesList.appendChild(cityCard);
+  });
+}
+
+
+
 
 
 
